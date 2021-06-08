@@ -11,8 +11,6 @@ void	error(char *str)
 	exit(0);
 }
 
-
-
 int	ft_strlen(const char *s)
 {
 	int	i;

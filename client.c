@@ -1,36 +1,39 @@
 #include "minitalk.h"
 
-static void decimal_conversion(char ascii, int power, int pid)
+static void send_ascii(char *str, pid_t pid)
 {
-	if (power > 0)
-		decimal_conversion(ascii / 2, power - 1, pid);
-	if ((ascii % 2) == 1)
-		kill(pid, SIGUSR1);
-	else
-		kill(pid, SIGUSR2);
-	usleep(50);
-}
-
-static void ascii_to_binary(char *str, int pid)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
+	int i;
+	
+	while (*str != '\0')
 	{
-		decimal_conversion(str[i], 7, pid);
-		i++;
+		i = 128;
+		while (i > 0)
+		{
+			if (i & *str)
+			{
+				if ((kill(pid, SIGUSR1)) < 0)
+					error("pizdest_sent1");
+			}
+			else
+			{
+				if ((kill(pid, SIGUSR2)) < 0)
+					error("pizdest_sent1");
+			}
+			i >>= 1;
+			usleep(100);
+		}
+		str++;
 	}
-
 }
 
 int	main(int argc, char **argv)
 {
+	pid_t	pid;
+
 	if (argc < 3)
 		error("not enough arguments\n");
 	if (argc > 3)
 		error("many arguments\n");
-	ascii_to_binary (argv[2], (atoi(argv[1]))); // заменить
-	while (1)
-		pause();
+	pid = (pid_t)atoi(argv[1]);
+	send_ascii(argv[2], pid);
 }

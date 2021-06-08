@@ -1,16 +1,9 @@
 #ifndef MINITALK_H
-# define MINITALK_H
+#define MINITALK_H
 
 # include <unistd.h>
 # include <signal.h>
 # include <stdlib.h>
-
-typedef struct s_glogal
-{
-	char	*str;
-	int		len;
-	int		pid;
-}				t_global;
 
 void	ft_putchar(char c);
 void	error(char *str);
@@ -19,4 +12,4 @@ int	ft_strlen(const char *s);
 void	ft_putstr(char *s);
 void	ft_putnbr(int n);
 
-#endif 
+#endif
