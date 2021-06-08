@@ -49,3 +49,5 @@ void	ft_putnbr(int n)
 	else
 		ft_putchar(n + '0');
 }
+
+
