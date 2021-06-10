@@ -1,8 +1,8 @@
 #include "minitalk.h"
 
-int	ft_check_pid(char *c)
+static	int	ft_check_pid(char *c)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (c[i] != 0)
@@ -14,10 +14,10 @@ int	ft_check_pid(char *c)
 	return (1);
 }
 
-static void send_ascii(char *str, pid_t pid)
+static	void	send_ascii(char *str, pid_t pid)
 {
-	int i;
-	
+	int	i;
+
 	while (*str != '\0')
 	{
 		i = 128;
@@ -26,12 +26,12 @@ static void send_ascii(char *str, pid_t pid)
 			if (i & *str)
 			{
 				if ((kill(pid, SIGUSR1)) < 0)
-					error("check_correct");
+					error("check_correct\n");
 			}
 			else
 			{
 				if ((kill(pid, SIGUSR2)) < 0)
-					error("check_correct");
+					error("check_correct\n");
 			}
 			i >>= 1;
 			usleep(60);
@@ -48,8 +48,9 @@ int	main(int argc, char **argv)
 		error("not enough arguments\n");
 	if (argc > 3)
 		error("many arguments\n");
-	pid = (pid_t)atoi(argv[1]);
+	pid = (pid_t)ft_atoi(argv[1]);
 	if (!(ft_check_pid(argv[1])) || pid > 99998 || pid <= 0)
 		error("pid_not_correct");
 	send_ascii(argv[2], pid);
+	write(1, "Message sent!\n", 15);
 }

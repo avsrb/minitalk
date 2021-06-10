@@ -1,6 +1,6 @@
 #include "minitalk.h"
 
-static void	sighandler(int signum) //signum номер полученного сигнала 
+static	void	sighandler(int signum)
 {
 	static char	ascii = 0;
 	static int	count = 128;
@@ -16,22 +16,22 @@ static void	sighandler(int signum) //signum номер полученного с
 	}
 }
 
-int		main(void)
+int	main(void)
 {
-	struct sigaction catch;
+	struct sigaction	catch;
 
-	write(1,"Server started\nPID: ", 21);
+	write(1, "Server started\nPID: ", 21);
 	ft_putnbr(getpid());
 	write(1, "\n", 1);
-	sigemptyset(&catch.sa_mask); //инициализирует набор сигналов и "очищает" его от всех сигналов
-	sigaddset(&catch.sa_mask, SIGUSR1); // вещаем обработчиков сигналов
+	sigemptyset(&catch.sa_mask);
+	sigaddset(&catch.sa_mask, SIGUSR1);
 	sigaddset(&catch.sa_mask, SIGUSR2);
 	while (1)
 	{
 		catch.sa_handler = sighandler;
-		if (sigaction(SIGUSR1, &catch, NULL) < 0 || sigaction(SIGUSR2, &catch, NULL) < 0)
-			error("sigaction_return_less_than_zero"); //изменить
+		if (sigaction(SIGUSR1, &catch, NULL) < 0 || \
+		sigaction(SIGUSR2, &catch, NULL) < 0)
+			error("sigaction_return_less_than_zero");
 		pause();
 	}
 }
-

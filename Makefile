@@ -1,27 +1,33 @@
-NAME	=	minitalk
+SERVER	=	server
 
-LIST	=	server.c client.c utils.c
+CLIENT	=	client
 
-HEADER	=	minitalk.h
+LIST_S	=	server.c utils.c
 
-OBJ		=	$(patsubst %.c, %.0, $(LIST))
+LIST_C	=	client.c utils.c ft_atoi.c
 
-FLAGS	=	-Wall -Wextra -Werror
+HEDEAR	=	minitalk.h
 
-all		:	$(NAME)
+GCC		=	gcc -Wall -Wextra -Werror
 
-$(NAME)	:	$(OBJ)
-	ar rcs $(NAME) $?
+OBJ_S	=	$(patsubst %.c, %.o, $(LIST_S))
 
-%.o		:	%.c $(HEADER)
-	gcc $(FLAGS) -c $< -o $@
+OBJ_C	=	$(patsubst %.c, %.o, $(LIST_C))
 
-clean	:
-	rm -f $(OBJ)
+all			:	$(SERVER) $(CLIENT)
 
-fclean	:
-	rm -f $(NAME)
+$(SERVER)	:	$(OBJ_S) $(HEADER)
+	$(GCC) $(LIST_S) -o $(SERVER) 
 
-re		:	fclean all
+$(CLIENT)	:	$(OBJ_C) $(HEADER)
+	$(GCC) $(FLAGS) $(LIST_C) -o $(CLIENT)
 
-.PHONY	: all clean fclean re
+clean		:
+	@rm -f $(OBJ_S) $(OBJ_C)
+
+fclean		:	clean
+	@rm -f $(SERVER) $(CLIENT)
+
+re			:	fclean all
+
+.PHONY		:	all clean fclean re
